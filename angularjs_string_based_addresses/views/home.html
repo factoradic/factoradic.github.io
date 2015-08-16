@@ -1,0 +1,35 @@
+<h1>Home view</h1>
+
+<p>Books list is created using <code>ng-repeat</code> directive.</p>
+
+<p>List of authors is coded by hand to show how to create links without <code>{{ index }}</code> iterator and <code>ng-repeat</code>
+    directive.</p>
+
+<p><code>BookController</code> use a extra property <code>urlName</code>. It saves rendering time when we display link
+    and when we go to
+    linked page. Difference in loading time is caused by lack of string normalization process, but we have to specify
+    one additional property for our data objects. This method is widely used in many content management systems. A big
+    plus is that we have a direct impact on the url, for example in news sites, we usually don't want to embed whole
+    article title in page address.</p>
+
+<p><code>AuthorController</code> use a string normalization process to determine which info has to be rendered.</p>
+
+<p>Please remember that links must be unique. In the case of very large applications, where data are modified by many
+    people it's hard to control every link and object. User experience is your main concern. You might solve this
+    problem by getting all matched objects and rendering them. I presented this method in <code>BookController</code>.
+</p>
+
+<h2>Books</h2>
+
+<ul>
+    <li ng-repeat="book in books">
+        <a href="#/book/{{ book.urlName }}">{{ book.title }}</a>
+    </li>
+</ul>
+
+<h2>Authors</h2>
+
+<ul>
+    <li><a href="#/author/terry-pratchett">Terry Pratchett</a></li>
+    <li><a href="#/author/andrzej-sapkowski">Andrzej Sapkowski</a></li>
+</ul>

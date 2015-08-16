@@ -1,0 +1,14 @@
+<h1>Book view</h1>
+
+<p ng-if="matchedBooks.length > 1" class="text-danger">Requested address returned more than one book. Sorry for the
+    inconvenience. The technical team has been informed :)</p>
+
+<div ng-repeat="book in matchedBooks">
+    <h2>{{ book.title }}</h2>
+
+    <p>Author: {{ book.author }}</p>
+
+    <p>Publication date: {{ book.pubDate }}</p>
+
+    <p>Genre: {{ book.genre.join(', ') }}</p>
+</div>
