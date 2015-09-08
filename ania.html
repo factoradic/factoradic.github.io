@@ -6,7 +6,7 @@
 
 Zacznijmy od algorytmów przechodzenia / przeszukiwania.
 
-1. BFS - przechodzenie wszerz
+**BFS - przechodzenie wszerz**
 
 Pierwszy poziom stanowi wierzchołek początkowy.
 
@@ -16,9 +16,15 @@ Kolejne poziomy to wszyscy sąsiedzi wierzchołków z poziomu wyższego.
 
 Każdy wierzchołek zapisujemy tylko raz, przy pierwszym odwiedzeniu. Sąsiadów danego wierzchołka zapisujemy w zdefiniowanym porządku (zazwyczaj alfabetycznym lub arytmetycznym) lub losowo jeżeli kolejność nie została podana.
 
-2. DFS - przechodzenie wgłąb
+Kolejność odwiedzania wierzchołków w BFS -> http://factoradic.github.io/bfs.svg
+
+**DFS - przechodzenie wgłąb**
 
 Zaczynamy od wierzchołka początkowego. Przechodzimy do jego pierwszego (w określonym porządku) sąsiada. Jeżeli dany wierzchołek ma nieodwiedzonych sąsiadów to przechodzimy do pierwszego nieodwiedzonego sąsiada. Jeżeli nie ma to wracamy w górę tak długo aż natrafimy na wierzchołek, który ma nieodwiedzonych sąsiadów. Algorytm kończy działanie, gdy znajdujemy się w wierzchołku początkowym, który nie ma już nieodwiedzonych sąsiadów.
+
+Kolejność odwiedzania wierzchołków w DFS -> http://factoradic.github.io/dfs.svg
+
+------
 
 Rezultatem obu algorytmów jest drzewo. Oba algorytmy używane są głównie do badania spójności grafu, jeżeli wynikowe drzewo zawiera wszystkie wierzchołki grafu to jest on spójny.
 
