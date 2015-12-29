@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<title>KCK.md</title>
+
+<xmp theme="united" style="display:none;">
+# Opis zadania
+
+Naszym zadaniem jest stworzenie programu bazującego na idei REPL (read - eval - print loop) z wykorzystaniem interfejsu wejścia obsługującego język naturalny.
+
+1. Read: pobranie tekstu (w języku naturalnym, bez dodatkowych wymagań) zrealizowane za pomocą elementu interfejsu programu głównego.
+2. Eval: *wysłanie* do programu w Prologu tekstu podanego przez użytkownika i przetworzenie go zgodnie z zasadami zdefiniowanej gramatyki.
+3. Print: *odesłanie* przetworzonego tekstu do programu głównego i podjęcie odpowiedniej akcji (wykonanie przypisanej metody na agencie lub zwrócenie błędu).
+
+# Wymagania
+
+## Technologie
+
+Musimy użyć Prologa do analizy wejścia podanego przez użytkownika, ale mamy dowolność co do wyboru języka i ewentualnych bibliotek / frameworków, których użyjemy do stworzenia interfejsu.
+
+Przekazywanie danych pomiędzy programem głównym (interfejsem) a Prologiem musi być zautomatyzowane i, w miarę możliwości, wydajne.
+
+## Wymagania odnośnie interfejsu
+
+Agent i plansza muszą zostać przedstawione w formie graficznej. Plansza może być płaska (2d) lub przestrzenna (3d).
+
+Agent nie może poruszać się po całej planszy, muszą zostać zdefiniowane specjalne ścieżki. Ścieżki mają składać się z takich samych elementów jak nasza wcześniejsza mapa (odcinki proste, łuki łagodne i ostre).
+
+Każda płytka (2d) / kostka (3d) ma przedstawiać pojedynczy obiekt (dla przykładu - punkt orientacyjny nie może znajdować się w tym samym miejscu co inny punkt orientacyjny).
+
+Agent powinien mieć ograniczone pole widzenia i nie powinien wykorzystywać informacji o mapie, których nie otrzymał od użytkownika lub których nie poznał sam w drodze eksploracji.
+
+## Wymagania odnośnie przetwarzania tekstu
+
+Zdefiniowana przez nas gramatyka powinna być *pełna* - to znaczy taka, która bierze pod uwagę nie tylko *wartość* danego słowa, ale również jego formę gramatyczną. Oznacza to, że każde zdanie zgodne (czyli możliwe do przeanalizowania) z naszą gramatyką powinno być zdaniem poprawnym gramatycznie. Dla przykładu, zdanie "podejdź do pies" powinno zostać uznane za niepoprawną komendę.
+
+# Nasze ustalenia
+
+## Sceneria
+
+Temat graficzny to plaża (i **ratownik**, nie zapominajmy o nim). Agentem będzie robot - wykrywacz metalu.
+
+Ścieżką będzie każdy fragment planszy nieograniczony parawanem i jednocześnie nie będący statycznym punktem orientacyjnym.
+
+Plansza będzie płaska (nie mieliśmy dobrego pomysłu na projekt w 3d, ale nadal mamy dużo czasu).
+
+## Model kierunkowy
+
+Podjęliśmy decyzję o implementacji dwóch modeli kierunkowych:
+- kierunki relatywne (lewo, prawo...)
+- kierunki absolutne (północ, wschód...)
+
+## Punkty orientacyjne
+
+By tchnąć trochę życia w nasz projekt zdecydowaliśmy się wprowadzić również punkty dynamiczne, które będą zmieniały pozycję.
+
+Aktualne propozycje:
+  - punkty statyczne:
+    - latarnia morska
+    - toalety
+    - molo
+    - głaz
+    - leżaki
+    - palma
+    - ... (dodam, gdy odczytam)
+  - punkty dynamiczne:
+    - plażowicze
+    - sprzedawcy
+    - piesek
+
+## Technologie
+
+Przy realizacji projektu wykorzystamy:
+
+- [SWI-Prolog 7.2](www.swi-prolog.org)
+- [Python 2.7.11](www.python.org)
+- [PySWIP 0.2.3](code.google.com/p/pyswip) - biblioteka pozwalająca na wysyłanie zapytań do Prologa z poziomu kodu Pythona (typowy bridge)
+- [PyGame 1.9.1](www.pygame.org) - biblioteka graficzna do Pythona z zestawem funkcji ułatwiających tworzenie gier komputerowych i wizualizacji graficznych
+
+# Zadania
+
+## Sprint 1
+
+1. Napisanie prostej gramatyki w Prologu opisującej zdania dotyczące ruchu bezpośredniego (takie jak: "idz w lewo", "idz na zachod").
+2. Napisanie prostej klasy `Agent` w Pythonie, która będzie reprezentowała naszego robota. Powinna ona posiadać właściwości pozwalające na przechowywanie aktualnej pozycji robota i kierunku, w którym jest zwrócony oraz metody pozwalające na ruch (poprzez zmianę wartości odpowiednich właściwości) w kierunku relatywnym lub absolutnym o jedną jednostkę. Na potrzeby testowania proszę o zdefiniowanie dodatkowej metody, która będzie wypisywała wartości wszystkich właściwości obiektu tej klasy w postaci prostej do odczytu.
+3. Napisanie konsolowego programu w Pythonie z użyciem PySWIP, który będzie realizował pętlę postaci:
+  1. Wczytaj tekst od użytkownika.
+  2. Przeanalizuj tekst za pomocą gramatyki stworzonej w punkcie 1.
+  3. Na podstawie zwróconego tekstu przez gramatykę wykonaj odpowiednią metodę na obiekcie klasy `Agent`.
+
+W przypadku otrzymania od użytkownika komendy błędnej (niezgodnej z naszą gramatyką) program musi to zakomunikować.
+
+## Sprint 2
+
+1. Zaplanowanie i przedstawienie (najlepiej w postaci rysunku odręcznego) przykładowej planszy, która posłuży do testowania naszej aplikacji i stanie się bazą dla procedur tworzących losowe mapy. Plansza musi być zgodna ze wszystkimi założeniami, to znaczy musi zawierać punkty orientacyjne i ograniczone ścieżki złożone ze wszystkich dostępnych elementów.
+2. Stworzenie lub znalezienie (proszę uważać na licencje) grafik zgodnych z tematem naszego projektu i odwzorowanie mapy z punktu 1. w postaci cyfrowej.
+3. Napisanie w Pythonie z użyciem PyGame aplikacji, która korzystając z macierzy liczb całkowitych lub macierzy wektorów liczb całkowitych reprezentującej mapę i pociętych plików graficznych (sprites) z punktu 2 *narysuje* mapę na ekranie.
+4. Dodanie do stworzonej aplikacji pola tekstowego i dodanie funkcjonalności zakodowanych w pierwszym sprincie.
+5. Napisanie funkcji z użyciem PyGame, która pozwoli na płynne (animacja) poruszenie obiektu na ekranie reprezentowanego przez pojedynyczy sprite.
+6. Zmiana metod klasy `Agent` tak by ruch się wykonał jeżeli jest możliwy (sprawdzenie powinno wykorzystywać macierzową reprezentację mapy).
+
+## Ciąg dalszy nastąpi.
+
+# Podział prac
+
+Tak jak się wcześniej umawialiśmy. Jeżeli ktoś ma ochotę napisać część tego projektu to oczywiście zapraszam. Proszę wybrać jeden z punktów wyżej i po prostu do mnie napisać.
+
+Pozostałe sprinty będą przyrostowe. Oznacza to, że jeżeli ktoś chciałby później dołączyć do prac to nie miałoby to sensu. Z tego względu, że i tak będziemy musieli sztucznie podzielić naszą pracę bo jeżeli jest to projekt zaliczeniowy to każdy będzie musiał być przygotowany na sprawdzenie znajomości swojej części projektu.
+
+Dla mnie najbardziej naturalny podział prac wygląda tak:
+- gramatyka (sam Prolog)
+- zaprogramowanie agenta (sam Python)
+- grafika (program graficzny plus Python z PyGame przy implementacji mapy i kodowania animacji)
+- zaprogramowanie przekazywania informacji pomiędzy Pythonem a Prologiem (dodanie do interfejsu pola tekstowego, oprogramowanie eventów, użycie bridga i stworzenie ładnego sposobu na wywołanie zgodnej z komendą metody agenta)
+
+Poczekam na Waszą reakcję. To oczywiste, że jeżeli ktoś chciałby wykonać (na przykład) punkt 1 ze sprintu 1 to nawet jeżeli nie chciałby później brać udziału w rozwijaniu gramatyki to nadal będzie to dla niego najlepszy wybór do nauki (część materiału będzie miał opanowaną przez to, że sam napisał część programu).
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
